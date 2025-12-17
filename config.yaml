@@ -1,0 +1,50 @@
+# AI Voice Clone Configuration
+# This file contains all configurable parameters for the voice cloning system
+
+# Audio processing parameters
+audio:
+  sample_rate: 22050        # Audio sampling rate in Hz
+  channels: 1              # Number of audio channels (1 = mono, 2 = stereo)
+  max_length: 10.0         # Maximum audio length in seconds
+  min_length: 1.0          # Minimum audio length in seconds
+
+# Feature extraction parameters
+features:
+  n_mels: 80               # Number of mel bins
+  n_fft: 1024              # FFT size
+  hop_length: 256          # Hop length for STFT
+  win_length: 1024         # Window length for STFT
+  fmin: 0                  # Minimum frequency for mel filterbank
+  fmax: 8000               # Maximum frequency for mel filterbank
+
+# Model architecture parameters
+model:
+  encoder_hidden_size: 256     # Encoder hidden dimension
+  encoder_num_layers: 2        # Number of encoder LSTM layers
+  decoder_hidden_size: 512     # Decoder hidden dimension
+  decoder_num_layers: 3        # Number of decoder LSTM layers
+  attention_dim: 128           # Attention mechanism dimension
+  dropout: 0.1                 # Dropout rate
+  bidirectional: true          # Use bidirectional encoder
+
+# Training parameters
+training:
+  learning_rate: 0.001         # Optimizer learning rate
+  batch_size: 16               # Training batch size
+  epochs: 100                  # Maximum training epochs
+  gradient_clip: 1.0           # Gradient clipping threshold
+  weight_decay: 0.000001       # L2 regularization weight
+  validation_split: 0.1        # Fraction of data for validation
+
+# Inference parameters
+inference:
+  temperature: 0.8             # Sampling temperature
+  top_k: 40                    # Top-k sampling
+  max_length: 1000             # Maximum output sequence length
+
+# File paths
+paths:
+  data_dir: "data"             # Data directory
+  model_dir: "models"          # Model directory
+  log_dir: "logs"              # Log directory
+  config_file: "config.yaml"   # Configuration file path
