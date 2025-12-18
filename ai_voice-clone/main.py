@@ -103,11 +103,23 @@ def train_model(reference_audio: str):
     print(f"Model trained and saved to: {model_path}")
 
 
+def launch_gui():
+    """Launch the graphical user interface."""
+    try:
+        from ai_voice_clone.UI.gui import main as gui_main
+        print("Launching AI Voice Clone GUI...")
+        gui_main()
+    except ImportError as e:
+        print(f"GUI dependencies not available: {e}")
+        print("Please install tkinter or use the command-line interface.")
+        sys.exit(1)
+
+
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(description="AI Voice Clone")
-    parser.add_argument("--mode", choices=["record", "clone", "train"],
-                       default="record", help="Operation mode")
+    parser.add_argument("--mode", choices=["record", "clone", "train", "gui"],
+                       default="gui", help="Operation mode (default: gui)")
     parser.add_argument("--input", "-i", help="Input audio file path")
     parser.add_argument("--output", "-o", default="output.wav",
                        help="Output audio file path")
@@ -126,7 +138,11 @@ def main():
     logger = logging.getLogger(__name__)
 
     try:
-        if args.mode == "record":
+        if args.mode == "gui":
+            # Launch graphical interface
+            launch_gui()
+
+        elif args.mode == "record":
             # Record voice sample
             output_path = args.output or "voice_sample.wav"
             record_voice_sample(output_path, args.duration)
@@ -147,7 +163,8 @@ def main():
 
             train_model(args.input)
 
-        logger.info("Operation completed successfully!")
+        if args.mode != "gui":
+            logger.info("Operation completed successfully!")
 
     except Exception as e:
         logger.error(f"Error: {str(e)}")

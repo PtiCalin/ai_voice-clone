@@ -96,7 +96,8 @@ The AI Voice Clone project implements voice synthesis and cloning using deep lea
 
 | Module Name | Description | Key Classes/Functions | Dependencies |
 |-------------|-------------|----------------------|--------------|
-| `main.py` | CLI entry point and main program logic | `main()`, `record_voice_sample()`, `clone_voice()`, `train_model()` | All other modules |
+| `main.py` | CLI entry point and GUI launcher | `main()`, `record_voice_sample()`, `clone_voice()`, `train_model()`, `launch_gui()` | All other modules |
+| `UI/gui.py` | Graphical user interface | `VoiceCloneGUI` class, `main()` | tkinter, threading, pathlib |
 | `config.py` | Configuration management | `Config` class, `load()`, `save()`, `get()` | yaml, pathlib |
 | `audio_input.py` | Audio recording and file I/O | `AudioInput` class, `record_audio()`, `load_audio()`, `save_audio()` | numpy, soundfile, sounddevice |
 | `feature_extraction.py` | Audio feature extraction | `FeatureExtractor` class, `extract_features()`, `normalize_features()` | torch, torchaudio, librosa, numpy |
@@ -118,6 +119,7 @@ The AI Voice Clone project implements voice synthesis and cloning using deep lea
 
 | Class Name | Module | Description | Key Methods | Inheritance |
 |------------|--------|-------------|-------------|-------------|
+| `VoiceCloneGUI` | `UI/gui.py` | Main GUI application | `setup_ui()`, `start_recording()`, `start_training()`, `start_cloning()` | object |
 | `Config` | `config.py` | Configuration manager | `load()`, `save()`, `get()`, `set()` | object |
 | `AudioInput` | `audio_input.py` | Audio recording and loading | `record_audio()`, `load_audio()`, `save_audio()` | object |
 | `FeatureExtractor` | `feature_extraction.py` | Audio feature extraction | `extract_features()`, `normalize_features()`, `extract_pitch()` | object |
@@ -266,3 +268,4 @@ The AI Voice Clone project implements voice synthesis and cloning using deep lea
 
 - v1.0.0: Initial data dictionary setup (December 2025)
 - v1.1.0: Updated with actual implementation details including main.py, config.py, audio_input.py, feature_extraction.py, model.py, training.py, inference.py, and supporting files (December 2025)
+- v1.2.0: Added GUI components including gui.py, VoiceCloneGUI class, and launcher script (December 2025)

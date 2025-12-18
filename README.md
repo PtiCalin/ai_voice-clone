@@ -16,11 +16,13 @@ AI Voice Clone is an open-source project aimed at developing advanced voice synt
 ## Project Scope
 
 ### Current Features
+
 - Basic voice recording and preprocessing
 - Audio feature extraction (MFCC, spectrograms)
 - Model training pipeline setup
 
 ### Development Roadmap
+
 - **Phase 1**: Implement basic voice cloning with pre-trained models
 - **Phase 2**: Custom model training from user audio samples
 - **Phase 3**: Real-time voice conversion
@@ -28,6 +30,7 @@ AI Voice Clone is an open-source project aimed at developing advanced voice synt
 - **Phase 5**: Web interface and API deployment
 
 ### Key Components
+
 - Data collection and preprocessing pipeline
 - Neural network architectures for voice synthesis
 - Training scripts and utilities
@@ -43,6 +46,24 @@ pip install -r requirements.txt
 ```
 
 ## Usage
+
+### Graphical User Interface (Recommended)
+
+The easiest way to use AI Voice Clone is through the graphical interface:
+
+```bash
+# Launch the GUI
+python ai_voice-clone/main.py --mode gui
+
+# Or use the launcher script
+python launch_gui.py
+```
+
+The GUI provides four main tabs:
+- **🎤 Record Voice**: Record audio from your microphone
+- **🧠 Train Model**: Train the voice cloning model with your recordings
+- **🔊 Clone Voice**: Generate cloned voice from text and reference audio
+- **⚙️ Settings**: Configure audio and model parameters
 
 ### Command Line Interface
 
@@ -60,7 +81,7 @@ python ai_voice-clone/main.py --mode clone --input my_voice.wav --text "Hello, t
 ### Python API
 
 ```python
-from ai_voice_clone import VoiceCloner, AudioInput, FeatureExtractor, Trainer, InferenceEngine, Config
+from ai_voice_clone import AudioInput, VoiceCloner, Trainer, InferenceEngine, Config
 
 # Initialize components
 config = Config()
@@ -91,7 +112,9 @@ audio_input.save_audio(cloned_audio, "output.wav")
 
 ```
 ai_voice-clone/
-├── main.py                 # CLI entry point
+├── main.py                 # CLI entry point and GUI launcher
+├── UI/
+│   └── gui.py             # Graphical user interface
 ├── config.py              # Configuration management
 ├── audio_input.py         # Audio recording and loading
 ├── feature_extraction.py  # Audio feature extraction
@@ -100,6 +123,8 @@ ai_voice-clone/
 ├── inference.py           # Voice generation
 ├── __init__.py            # Package initialization
 ├── requirements.txt       # Dependencies
+├── launch_gui.py          # GUI launcher script
+├── config.yaml            # Default configuration
 └── ...
 ```
 

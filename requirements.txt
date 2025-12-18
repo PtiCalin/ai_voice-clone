@@ -13,6 +13,9 @@ sounddevice>=0.4.4
 pyyaml>=5.4.1
 tqdm>=4.62.0
 
+# GUI (optional - included with Python on most systems)
+# tkinter is usually included with Python installations
+
 # Optional: for advanced audio processing
 # pesq>=0.0.3
 # pystoi>=0.3.3

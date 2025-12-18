@@ -5,6 +5,7 @@ This package provides tools for:
 - Recording and processing audio
 - Training voice cloning models
 - Generating synthetic speech with cloned voices
+- Graphical user interface for easy interaction
 """
 
 __version__ = "0.1.0"
@@ -18,11 +19,24 @@ from .training import Trainer
 from .inference import InferenceEngine
 from .config import Config
 
-__all__ = [
-    'AudioInput',
-    'FeatureExtractor',
-    'VoiceCloner',
-    'Trainer',
-    'InferenceEngine',
-    'Config'
-]
+# GUI is optional (requires tkinter)
+try:
+    from .UI.gui import VoiceCloneGUI
+    __all__ = [
+        'AudioInput',
+        'FeatureExtractor',
+        'VoiceCloner',
+        'Trainer',
+        'InferenceEngine',
+        'Config',
+        'VoiceCloneGUI'
+    ]
+except ImportError:
+    __all__ = [
+        'AudioInput',
+        'FeatureExtractor',
+        'VoiceCloner',
+        'Trainer',
+        'InferenceEngine',
+        'Config'
+    ]
