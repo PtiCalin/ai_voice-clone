@@ -112,6 +112,16 @@ The system uses a YAML configuration file (`config.yaml`) with the following mai
 - `model`: Neural network architecture
 - `training`: Training hyperparameters
 - `inference`: Generation parameters
+- `vocoder`: Mel-to-audio backend selection (Griffin-Lim, HiFi-GAN, or WaveGlow)
+
+Example vocoder configuration:
+
+```yaml
+vocoder:
+  backend: hifigan
+  hifigan:
+    model_path: /path/to/hifigan-torchscript.pt
+```
 
 ## Contributing
 

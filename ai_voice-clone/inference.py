@@ -9,6 +9,8 @@ from pathlib import Path
 from typing import Optional, Tuple
 import logging
 
+from ai_voice_clone.vocoder import build_vocoder
+
 logger = logging.getLogger(__name__)
 
 
@@ -49,6 +51,9 @@ class InferenceEngine:
 
         # Vocab for text processing (simplified)
         self.vocab = self._create_vocab()
+
+        # Vocoder for mel-to-audio conversion
+        self.vocoder = build_vocoder(config, self.device)
 
     def _create_vocab(self) -> dict:
         """Create a simple vocabulary for text processing."""
@@ -169,38 +174,7 @@ class InferenceEngine:
         Returns:
             Audio waveform
         """
-        try:
-            import librosa
-
-            # Convert log mel to linear mel
-            mel_spectrogram = np.exp(mel_spectrogram)
-
-            # Convert mel to linear spectrogram
-            linear_spec = librosa.feature.inverse.mel_to_stft(
-                mel_spectrogram,
-                sr=sample_rate,
-                n_fft=self.config.get('features.n_fft', 1024),
-                hop_length=self.config.get('features.hop_length', 256)
-            )
-
-            # Convert to audio using Griffin-Lim
-            audio = librosa.griffinlim(
-                linear_spec,
-                hop_length=self.config.get('features.hop_length', 256),
-                win_length=self.config.get('features.win_length', 1024)
-            )
-
-            # Normalize
-            if np.max(np.abs(audio)) > 0:
-                audio = audio / np.max(np.abs(audio))
-
-            return audio
-
-        except ImportError:
-            logger.warning("librosa not available, using simple reconstruction")
-            # Very basic reconstruction (not recommended for production)
-            # This would need a proper vocoder in a real implementation
-            return np.random.randn(mel_spectrogram.shape[1] * 256).astype(np.float32)
+        return self.vocoder.synthesize(mel_spectrogram, sample_rate)
 
     def generate_with_sampling(self, text: str, reference_audio_path: str,
                              temperature: float = 1.0, top_k: int = 40) -> np.ndarray:

@@ -42,6 +42,15 @@ inference:
   top_k: 40                    # Top-k sampling
   max_length: 1000             # Maximum output sequence length
 
+# Vocoder parameters
+vocoder:
+  backend: griffinlim          # griffinlim, hifigan, or waveglow
+  hifigan:
+    model_path: ""             # Path to TorchScript HiFi-GAN model
+  waveglow:
+    model_path: ""             # Path to TorchScript WaveGlow model
+    sigma: 0.6                 # WaveGlow noise level
+
 # File paths
 paths:
   data_dir: "data"             # Data directory
