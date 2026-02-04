@@ -9,6 +9,8 @@ from pathlib import Path
 from typing import Optional, Tuple
 import logging
 
+from ai_voice_clone.text_processing import TextTokenizer
+
 logger = logging.getLogger(__name__)
 
 
@@ -47,18 +49,8 @@ class InferenceEngine:
         self.top_k = config.get('inference.top_k', 40)
         self.max_length = config.get('inference.max_length', 1000)
 
-        # Vocab for text processing (simplified)
-        self.vocab = self._create_vocab()
-
-    def _create_vocab(self) -> dict:
-        """Create a simple vocabulary for text processing."""
-        # Basic character-level vocabulary
-        chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 .,!?-"
-        vocab = {'<SOS>': 0, '<EOS>': 1, '<PAD>': 2}
-        for i, char in enumerate(chars, start=3):
-            vocab[char] = i
-        vocab['<UNK>'] = len(vocab)
-        return vocab
+        # Tokenizer for text processing
+        self.tokenizer = TextTokenizer()
 
     def text_to_tokens(self, text: str) -> torch.Tensor:
         """
@@ -70,15 +62,7 @@ class InferenceEngine:
         Returns:
             Token tensor
         """
-        tokens = [self.vocab.get('<SOS>', 0)]  # Start token
-
-        for char in text.lower():
-            token = self.vocab.get(char, self.vocab.get('<UNK>', 2))
-            tokens.append(token)
-
-        tokens.append(self.vocab.get('<EOS>', 1))  # End token
-
-        return torch.tensor(tokens, dtype=torch.long)
+        return self.tokenizer.text_to_tokens(text)
 
     def load_model(self, model_path: str) -> None:
         """
