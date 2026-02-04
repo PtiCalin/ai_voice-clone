@@ -35,6 +35,9 @@ training:
   gradient_clip: 1.0           # Gradient clipping threshold
   weight_decay: 0.000001       # L2 regularization weight
   validation_split: 0.1        # Fraction of data for validation
+  manifest_path: "data/metadata.csv" # Manifest file with audio/text pairs
+  manifest_delimiter: ","      # Delimiter for CSV/TSV manifests
+  transcript_extension: ".txt" # Default transcript extension for paired files
 
 # Inference parameters
 inference:
