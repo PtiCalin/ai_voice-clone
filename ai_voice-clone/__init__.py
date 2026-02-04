@@ -12,6 +12,7 @@ __author__ = "AI Voice Clone Team"
 __description__ = "Deep learning voice cloning and synthesis system"
 
 from .audio_input import AudioInput
+from .audio_upload import AudioAsset, AudioUploadRecorder
 from .feature_extraction import FeatureExtractor
 from .model import VoiceCloner
 from .training import Trainer
@@ -20,6 +21,8 @@ from .config import Config
 
 __all__ = [
     'AudioInput',
+    'AudioAsset',
+    'AudioUploadRecorder',
     'FeatureExtractor',
     'VoiceCloner',
     'Trainer',
