@@ -123,7 +123,7 @@ This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) fo
 
 ## Testing
 
-See [TESTING.md](TESTING.md) for testing procedures.
+See [TESTING.md](TESTING.md) for testing procedures, automated test expansion guidance, and evaluation metric reporting.
 
 ## Update Log
 
