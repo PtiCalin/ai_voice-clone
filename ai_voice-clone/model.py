@@ -242,6 +242,9 @@ class VoiceCloner(nn.Module):
             dropout=self.dropout
         )
 
+        # Project encoder embedding to decoder hidden size for efficient decoding
+        self.voice_embedding_projection = nn.Linear(self.encoder_hidden, self.decoder_hidden)
+
         # Output projection to mel spectrograms
         self.mel_projection = nn.Linear(self.decoder_hidden, self.feature_dim)
 
@@ -275,15 +278,17 @@ class VoiceCloner(nn.Module):
         batch_size = text_tokens.shape[0]
         outputs = []
 
+        projected_embedding = self._project_voice_embedding(voice_embedding)
+
         # Initialize decoder hidden state with voice embedding
-        decoder_hidden = self._init_decoder_hidden(voice_embedding, batch_size)
+        decoder_hidden = self._init_decoder_hidden(projected_embedding, batch_size)
 
         # Start with SOS token (assuming 0 is SOS)
         current_token = torch.zeros(batch_size, dtype=torch.long, device=text_tokens.device)
 
         for t in range(max_length):
             # Decoder step
-            output, decoder_hidden = self.decoder(current_token, voice_embedding, decoder_hidden)
+            output, decoder_hidden = self.decoder(current_token, projected_embedding, decoder_hidden)
 
             # Project to mel spectrograms
             mel_frame = self.mel_projection(output)  # (batch_size, feature_dim)
@@ -300,6 +305,18 @@ class VoiceCloner(nn.Module):
         outputs = torch.cat(outputs, dim=1)  # (batch_size, seq_len, feature_dim)
 
         return outputs
+
+    def _project_voice_embedding(self, voice_embedding: torch.Tensor) -> torch.Tensor:
+        """
+        Project encoder embedding to decoder hidden size.
+
+        Args:
+            voice_embedding: Voice embedding (batch_size, encoder_hidden)
+
+        Returns:
+            Projected embedding (batch_size, decoder_hidden)
+        """
+        return self.voice_embedding_projection(voice_embedding)
 
     def _init_decoder_hidden(self, voice_embedding: torch.Tensor, batch_size: int) -> Tuple[torch.Tensor, torch.Tensor]:
         """
