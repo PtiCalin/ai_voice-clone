@@ -11,7 +11,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, Dataset, random_split
 from torch.nn.utils.rnn import pad_sequence
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 import logging
 from tqdm import tqdm
 
@@ -107,7 +107,9 @@ class Trainer:
         """
         logger.info("Preparing data from paired audio/text transcripts.")
 
-        manifest_path = manifest_path or self.config.get('training.manifest_path')
+        # Only use config default manifest if no explicit input is provided
+        if manifest_path is None and audio_file is None:
+            manifest_path = self.config.get('training.manifest_path')
 
         pairs = self._resolve_pairs(audio_file, transcript_file, manifest_path)
         examples = self._build_examples(pairs)
@@ -347,7 +349,7 @@ class Trainer:
 
     def train(self, audio_file: Optional[str] = None,
               transcript_file: Optional[str] = None,
-              manifest_path: Optional[str] = None) -> Dict[str, any]:
+              manifest_path: Optional[str] = None) -> Dict[str, Any]:
         """
         Train the model.
 
