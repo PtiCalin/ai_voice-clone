@@ -47,7 +47,9 @@ class InferenceEngine:
         self.top_k = config.get('inference.top_k', 40)
         self.max_length = config.get('inference.max_length', 1000)
 
-        # Vocab for text processing (simplified)
+        # Vocab for text processing (simplified character-level tokens).
+        # TODO: Upgrade to a richer normalization/tokenization pipeline
+        # (e.g., phonemes or subword units) to improve pronunciation/prosody.
         self.vocab = self._create_vocab()
 
     def _create_vocab(self) -> dict:
