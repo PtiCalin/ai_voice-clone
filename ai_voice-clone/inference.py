@@ -51,6 +51,20 @@ class InferenceEngine:
 
         # Tokenizer for text processing
         self.tokenizer = TextTokenizer()
+        # Vocab for text processing (simplified character-level tokens).
+        # TODO: Upgrade to a richer normalization/tokenization pipeline
+        # (e.g., phonemes or subword units) to improve pronunciation/prosody.
+        self.vocab = self._create_vocab()
+
+    def _create_vocab(self) -> dict:
+        """Create a simple vocabulary for text processing."""
+        # Basic character-level vocabulary
+        chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 .,!?-"
+        vocab = {'<SOS>': 0, '<EOS>': 1, '<PAD>': 2}
+        for i, char in enumerate(chars, start=3):
+            vocab[char] = i
+        vocab['<UNK>'] = len(vocab)
+        return vocab
 
     def text_to_tokens(self, text: str) -> torch.Tensor:
         """

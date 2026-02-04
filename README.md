@@ -27,6 +27,9 @@ AI Voice Clone is an open-source project aimed at developing advanced voice synt
 - **Phase 4**: Multi-speaker voice cloning
 - **Phase 5**: Web interface and API deployment
 
+### Model Improvements
+The model architecture is currently a compact encoder/decoder skeleton. Studying Tacotron2-style architectures, attention mechanisms, and multi-speaker conditioning will align with upcoming roadmap goals.
+
 ### Key Components
 - Data collection and preprocessing pipeline
 - Neural network architectures for voice synthesis
@@ -123,7 +126,7 @@ This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) fo
 
 ## Testing
 
-See [TESTING.md](TESTING.md) for testing procedures.
+See [TESTING.md](TESTING.md) for testing procedures, automated test expansion guidance, and evaluation metric reporting.
 
 ## Update Log
 
