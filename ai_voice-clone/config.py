@@ -62,6 +62,18 @@ class Config:
                 "max_length": 1000,
             },
 
+            # Vocoder parameters
+            "vocoder": {
+                "backend": "griffinlim",
+                "hifigan": {
+                    "model_path": "",
+                },
+                "waveglow": {
+                    "model_path": "",
+                    "sigma": 0.6,
+                },
+            },
+
             # File paths
             "paths": {
                 "data_dir": "data",
