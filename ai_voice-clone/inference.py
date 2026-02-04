@@ -10,6 +10,7 @@ from typing import Optional, Tuple
 import logging
 
 from ai_voice_clone.vocoder import build_vocoder
+from ai_voice_clone.text_processing import TextTokenizer
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +50,11 @@ class InferenceEngine:
         self.top_k = config.get('inference.top_k', 40)
         self.max_length = config.get('inference.max_length', 1000)
 
-        # Vocab for text processing (simplified)
+        # Tokenizer for text processing
+        self.tokenizer = TextTokenizer()
+        # Vocab for text processing (simplified character-level tokens).
+        # TODO: Upgrade to a richer normalization/tokenization pipeline
+        # (e.g., phonemes or subword units) to improve pronunciation/prosody.
         self.vocab = self._create_vocab()
 
         # Vocoder for mel-to-audio conversion
@@ -75,15 +80,7 @@ class InferenceEngine:
         Returns:
             Token tensor
         """
-        tokens = [self.vocab.get('<SOS>', 0)]  # Start token
-
-        for char in text.lower():
-            token = self.vocab.get(char, self.vocab.get('<UNK>', 2))
-            tokens.append(token)
-
-        tokens.append(self.vocab.get('<EOS>', 1))  # End token
-
-        return torch.tensor(tokens, dtype=torch.long)
+        return self.tokenizer.text_to_tokens(text)
 
     def load_model(self, model_path: str) -> None:
         """

@@ -10,6 +10,7 @@ import argparse
 import logging
 import sys
 from pathlib import Path
+from typing import Optional
 
 # Add parent directory to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
@@ -80,7 +81,9 @@ def clone_voice(reference_audio: str, text: str, output_path: str):
     print(f"Cloned voice saved to: {output_path}")
 
 
-def train_model(reference_audio: str):
+def train_model(reference_audio: Optional[str],
+                transcript_path: Optional[str] = None,
+                manifest_path: Optional[str] = None):
     """Train the voice cloning model."""
     print("Training voice cloning model...")
 
@@ -93,7 +96,11 @@ def train_model(reference_audio: str):
     trainer = Trainer(model, feature_extractor, config)
 
     # Train model
-    trainer.train(reference_audio)
+    trainer.train(
+        audio_file=reference_audio,
+        transcript_file=transcript_path,
+        manifest_path=manifest_path
+    )
 
     # Save model
     model_path = "models/voice_clone_model.pt"
@@ -115,6 +122,8 @@ def main():
                        help="Text to generate for voice cloning")
     parser.add_argument("--duration", "-d", type=int, default=5,
                        help="Recording duration in seconds")
+    parser.add_argument("--transcript", help="Transcript file for training audio")
+    parser.add_argument("--manifest", help="Manifest file with audio/text pairs for training")
     parser.add_argument("--log-level", default="INFO",
                        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
                        help="Logging level")
@@ -141,11 +150,11 @@ def main():
 
         elif args.mode == "train":
             # Train model
-            if not args.input:
-                logger.error("Input audio file required for training mode")
+            if not args.input and not args.manifest:
+                logger.error("Input audio file or manifest file required for training mode")
                 sys.exit(1)
 
-            train_model(args.input)
+            train_model(args.input, args.transcript, args.manifest)
 
         logger.info("Operation completed successfully!")
 

@@ -50,6 +50,9 @@ class Config:
                 "gradient_clip": 1.0,
                 "weight_decay": 1e-6,
                 "validation_split": 0.1,
+                "manifest_path": "data/metadata.csv",
+                "manifest_delimiter": ",",
+                "transcript_extension": ".txt",
             },
 
             # Inference parameters
